@@ -5,9 +5,11 @@ class WebHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Web Home")),
+      appBar: AppBar(
+        title: Text('title'.tr), // Localized title
+      ),
       body: Center(
-        child: Text("This is the Web Home Screen"),
+        child: Text('welcome'.tr), // Localized welcome message
       ),
     );
   }

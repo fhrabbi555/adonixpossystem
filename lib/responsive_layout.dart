@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 // ResponsiveLayout helps to switch between mobile and web screens based on screen width.
 class ResponsiveLayout extends StatelessWidget {
