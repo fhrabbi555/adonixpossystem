@@ -2,19 +2,17 @@ import 'package:adonixpossystem/controllers/menu_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import '../routes.dart';
+import '../utility /app_color.dart';
 
 class MenuWidget extends StatelessWidget {
-  final Color primaryGreen =
-      Colors.green[800]!; // Green color for selected items
+  // Initialize the controller outside of the Obx widget
+  final MenuControllers menuController = Get.put(MenuControllers());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final MenuControllers menuController = Get.put(MenuControllers());
-
       return Container(
         width: 250,
         color: Colors.white, // White background for the menu
@@ -22,7 +20,7 @@ class MenuWidget extends StatelessWidget {
           children: [
             Container(
               height: 120,
-              color: primaryGreen,
+              color: AppColors.primaryGreen, // Use color from AppColors
               alignment: Alignment.center,
               child: const Text(
                 "LOGO",
@@ -36,12 +34,14 @@ class MenuWidget extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _buildMenuItem(material.Icons.dashboard, "Dashboard", 0,
-                      menuController, '/dashboard'),
+                  // Updated route for the Home screen instead of Dashboard
+                  _buildMenuItem(
+                      material.Icons.home, "Home", 0, menuController, '/home'),
                   _buildMenuWithSubmenu(material.Icons.point_of_sale, "POS", 1,
                       menuController, '/pos'),
                   _buildMenuItem(material.Icons.report, "Reports", 2,
-                      menuController, '/reports'),
+                      menuController, AppRoutes.reports),
+
                   _buildMenuWithSubmenu(material.Icons.settings, "Settings", 3,
                       menuController, '/settings'),
                   // Add more menu items as needed
@@ -69,7 +69,9 @@ class MenuWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10), // Button radius of 10
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? primaryGreen : Colors.transparent,
+            color: isSelected
+                ? AppColors.primaryGreen
+                : Colors.transparent, // Use color from AppColors
             borderRadius:
                 BorderRadius.circular(10), // Increased radius for selected item
           ),
@@ -78,14 +80,16 @@ class MenuWidget extends StatelessWidget {
               icon,
               color: isSelected
                   ? Colors.white
-                  : primaryGreen, // White when selected, green when not
+                  : AppColors
+                      .primaryGreen, // White when selected, green when not
             ),
             title: Text(
               title,
               style: TextStyle(
                 color: isSelected
                     ? Colors.white
-                    : primaryGreen, // White when selected, green when not
+                    : AppColors
+                        .primaryGreen, // White when selected, green when not
               ),
             ),
           ),
@@ -112,7 +116,9 @@ class MenuWidget extends StatelessWidget {
             BorderRadius.circular(10), // Increased radius for selected item
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? primaryGreen : Colors.transparent,
+            color: isSelected
+                ? AppColors.primaryGreen
+                : Colors.transparent, // Use color from AppColors
             borderRadius:
                 BorderRadius.circular(10), // Increased radius for selected item
           ),
@@ -123,21 +129,23 @@ class MenuWidget extends StatelessWidget {
                   icon,
                   color: isSelected
                       ? Colors.white
-                      : primaryGreen, // White when selected, green when not
+                      : AppColors
+                          .primaryGreen, // White when selected, green when not
                 ),
                 title: Text(
                   title,
                   style: TextStyle(
                     color: isSelected
                         ? Colors.white
-                        : primaryGreen, // White when selected, green when not
+                        : AppColors
+                            .primaryGreen, // White when selected, green when not
                   ),
                 ),
                 trailing: Icon(
                   isExpanded
                       ? Icons.expand_less // Show collapse icon when expanded
                       : Icons.expand_more, // Show expand icon when collapsed
-                  color: isSelected ? Colors.white : primaryGreen,
+                  color: isSelected ? Colors.white : AppColors.primaryGreen,
                 ),
               ),
               if (isExpanded)
@@ -182,7 +190,9 @@ class MenuWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10), // Button radius of 10
         child: Container(
           decoration: BoxDecoration(
-            color: isSubmenuSelected ? primaryGreen : Colors.transparent,
+            color: isSubmenuSelected
+                ? AppColors.primaryGreen
+                : Colors.transparent, // Use color from AppColors
             borderRadius: BorderRadius.circular(
                 10), // Increased radius for selected submenu
           ),
@@ -192,7 +202,8 @@ class MenuWidget extends StatelessWidget {
               style: TextStyle(
                 color: isSubmenuSelected
                     ? Colors.white
-                    : primaryGreen, // White when selected, green when not
+                    : AppColors
+                        .primaryGreen, // White when selected, green when not
               ),
             ),
           ),
