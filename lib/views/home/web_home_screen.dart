@@ -75,13 +75,24 @@ class _SidebarMenuState extends State<SidebarMenu>
           // Modify the DrawerHeader to remove any space
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Adonix POS System',
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    'Adonix POS System',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
+              ],
             ),
           ),
           Expanded(
