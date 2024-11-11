@@ -2,9 +2,7 @@ import 'package:adonixpossystem/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:adonixpossystem/responsive_layout.dart';
-import 'package:adonixpossystem/views/home/mobile_home_screen.dart';
-import 'package:adonixpossystem/views/home/web_home_screen.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Adjust import based on your setup
 
 void main() {

@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.6
+  animated_tree_view: ^2.1.0
+  
   flutter_localizations:
     sdk: flutter
   intl: any
