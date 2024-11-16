@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../dashboard/web_dashboard_screen.dart';
 import '../layouts/sidebar_menu.dart';
+import '../overview/web_overview_screen.dart';
 
 class WebHomeScreen extends StatefulWidget {
   @override
@@ -11,7 +11,8 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
   int _selectedIndex = 0; // Track the selected index
 
   final List<Widget> _pages = [
-    WebDashboardScreen(),
+    WebOverviewScreen(),
+    WebOverviewScreen(),
     UsersListScreen(),
     AddUserScreen(),
     SettingsScreen(),

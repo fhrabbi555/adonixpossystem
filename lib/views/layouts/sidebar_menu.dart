@@ -34,14 +34,23 @@ class _SidebarMenuState extends State<SidebarMenu>
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.2,
-      margin: EdgeInsets.symmetric(
-          horizontal: 10), // Added margin for left and right
-      color: Colors.white, // Change the background color to white
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
       child: Column(
         children: [
-          // Modify the DrawerHeader to remove any space
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,15 +59,12 @@ class _SidebarMenuState extends State<SidebarMenu>
                     'Adonix POS System',
                     style: TextStyle(
                       color: AppColors.primaryGreen,
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
+                Divider(thickness: 1, color: Colors.grey),
               ],
             ),
           ),
@@ -66,88 +72,31 @@ class _SidebarMenuState extends State<SidebarMenu>
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                // Expandable Dashboard Menu
-                ListTile(
-                  leading: Icon(Icons.settings, color: Colors.black),
-                  title: Text(
-                    'Dashboard',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isDashboardExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isDashboardExpanded = !_isDashboardExpanded;
-                    });
-                  },
-                ),
-                if (_isDashboardExpanded) ...[
+                _buildExpandableMenu('Dashboard', Icons.dashboard, () {
+                  setState(() {
+                    _isDashboardExpanded = !_isDashboardExpanded;
+                  });
+                }, _isDashboardExpanded, [
                   _buildSubMenuItem('Overview', Icons.dashboard, 1),
                   _buildSubMenuItem('Sales Summary', Icons.sell, 2),
                   _buildSubMenuItem('Inventory Overview', Icons.inventory, 3),
-                ],
-                // Expandable Orders Menu
-                ListTile(
-                  leading: Icon(Icons.receipt, color: Colors.black),
-                  title: Text(
-                    'Orders',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isOrdersExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isOrdersExpanded = !_isOrdersExpanded;
-                    });
-                  },
-                ),
-                if (_isOrdersExpanded) ...[
+                ]),
+                _buildExpandableMenu('Orders', Icons.receipt, () {
+                  setState(() {
+                    _isOrdersExpanded = !_isOrdersExpanded;
+                  });
+                }, _isOrdersExpanded, [
                   _buildSubMenuItem('POS Invoice', Icons.print, 7),
                   _buildSubMenuItem('Order List', Icons.list, 8),
                   _buildSubMenuItem('Pending Orders', Icons.hourglass_empty, 9),
                   _buildSubMenuItem('Completed Orders', Icons.check_circle, 10),
                   _buildSubMenuItem('Canceled Orders', Icons.cancel, 11),
-                ],
-                // Expandable Purchases Menu
-                ListTile(
-                  leading: Icon(Icons.shopping_cart, color: Colors.black),
-                  title: Text(
-                    'Purchases',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isPurchasesExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isPurchasesExpanded = !_isPurchasesExpanded;
-                    });
-                  },
-                ),
-                if (_isPurchasesExpanded) ...[
+                ]),
+                _buildExpandableMenu('Purchases', Icons.shopping_cart, () {
+                  setState(() {
+                    _isPurchasesExpanded = !_isPurchasesExpanded;
+                  });
+                }, _isPurchasesExpanded, [
                   _buildSubMenuItem('Purchase Items', Icons.shopping_bag, 12),
                   _buildSubMenuItem(
                       'Add Purchase', Icons.add_shopping_cart, 13),
@@ -157,62 +106,24 @@ class _SidebarMenuState extends State<SidebarMenu>
                   _buildSubMenuItem(
                       'Supplier Ledger', Icons.account_balance, 16),
                   _buildSubMenuItem('Stock-Out Ingredients', Icons.warning, 17),
-                ],
-                // Expandable Products & Inventory Menu
-                ListTile(
-                  leading: Icon(Icons.store, color: Colors.black),
-                  title: Text(
-                    'Products & Inventory',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isProductsExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isProductsExpanded = !_isProductsExpanded;
-                    });
-                  },
-                ),
-                if (_isProductsExpanded) ...[
+                ]),
+                _buildExpandableMenu('Products & Inventory', Icons.store, () {
+                  setState(() {
+                    _isProductsExpanded = !_isProductsExpanded;
+                  });
+                }, _isProductsExpanded, [
                   _buildSubMenuItem('Manage Categories', Icons.category, 18),
                   _buildSubMenuItem('Manage Products', Icons.add_box, 19),
                   _buildSubMenuItem('Stock Management', Icons.storage, 20),
                   _buildSubMenuItem('Stock Adjustment', Icons.settings, 21),
                   _buildSubMenuItem(
                       'Low Stock Alerts', Icons.notifications, 22),
-                ],
-                // Expandable Reports Menu
-                ListTile(
-                  leading: Icon(Icons.bar_chart, color: Colors.black),
-                  title: Text(
-                    'Reports',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isReportsExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isReportsExpanded = !_isReportsExpanded;
-                    });
-                  },
-                ),
-                if (_isReportsExpanded) ...[
+                ]),
+                _buildExpandableMenu('Reports', Icons.bar_chart, () {
+                  setState(() {
+                    _isReportsExpanded = !_isReportsExpanded;
+                  });
+                }, _isReportsExpanded, [
                   _buildSubMenuItem('Sales Reports', Icons.analytics, 23),
                   _buildSubMenuItem('Inventory Reports', Icons.inventory_2, 24),
                   _buildSubMenuItem(
@@ -220,60 +131,22 @@ class _SidebarMenuState extends State<SidebarMenu>
                   _buildSubMenuItem(
                       'Financial Reports', Icons.account_balance_wallet, 26),
                   _buildSubMenuItem('Custom Reports', Icons.file_copy, 27),
-                ],
-                // Expandable Production Menu
-                ListTile(
-                  leading: Icon(Icons.production_quantity_limits,
-                      color: Colors.black),
-                  title: Text(
-                    'Production',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isProductionExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isProductionExpanded = !_isProductionExpanded;
-                    });
-                  },
-                ),
-                if (_isProductionExpanded) ...[
+                ]),
+                _buildExpandableMenu(
+                    'Production', Icons.production_quantity_limits, () {
+                  setState(() {
+                    _isProductionExpanded = !_isProductionExpanded;
+                  });
+                }, _isProductionExpanded, [
                   _buildSubMenuItem('Set Production Units', Icons.build, 28),
                   _buildSubMenuItem('Add Production', Icons.add_circle, 29),
                   _buildSubMenuItem('Production List', Icons.list_alt, 30),
-                ],
-                // Expandable Accounts Menu
-                ListTile(
-                  leading: Icon(Icons.account_balance, color: Colors.black),
-                  title: Text(
-                    'Accounts',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isAccountsExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isAccountsExpanded = !_isAccountsExpanded;
-                    });
-                  },
-                ),
-                if (_isAccountsExpanded) ...[
+                ]),
+                _buildExpandableMenu('Accounts', Icons.account_balance, () {
+                  setState(() {
+                    _isAccountsExpanded = !_isAccountsExpanded;
+                  });
+                }, _isAccountsExpanded, [
                   _buildSubMenuItem(
                       'Chart of Accounts', Icons.account_tree, 31),
                   _buildSubMenuItem('Supplier Payments', Icons.payment, 32),
@@ -287,29 +160,12 @@ class _SidebarMenuState extends State<SidebarMenu>
                   _buildSubMenuItem('Voucher Approval', Icons.check, 38),
                   _buildSubMenuItem(
                       'Financial Reports', Icons.account_balance_wallet, 39),
-                ],
-                // Expandable Human Resources Menu
-                ListTile(
-                  leading: Icon(Icons.people, color: Colors.black),
-                  title: Text(
-                    'Human Resources',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isHRExpanded ? 0.5 : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isHRExpanded = !_isHRExpanded;
-                    });
-                  },
-                ),
-                if (_isHRExpanded) ...[
+                ]),
+                _buildExpandableMenu('Human Resources', Icons.people, () {
+                  setState(() {
+                    _isHRExpanded = !_isHRExpanded;
+                  });
+                }, _isHRExpanded, [
                   _buildSubMenuItem('Employee Management', Icons.person, 40),
                   _buildSubMenuItem(
                       'Attendance Tracking', Icons.access_time, 41),
@@ -323,125 +179,51 @@ class _SidebarMenuState extends State<SidebarMenu>
                       'Payroll Processing', Icons.attach_money, 47),
                   _buildSubMenuItem(
                       'Expense Management', Icons.account_balance_wallet, 48),
-                ],
-                // Expandable Customer Management Menu
-                ListTile(
-                  leading: Icon(Icons.account_circle, color: Colors.black),
-                  title: Text(
-                    'Customer Management',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isCustomerExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isCustomerExpanded = !_isCustomerExpanded;
-                    });
-                  },
-                ),
-                if (_isCustomerExpanded) ...[
+                ]),
+                _buildExpandableMenu(
+                    'Customer Management', Icons.account_circle, () {
+                  setState(() {
+                    _isCustomerExpanded = !_isCustomerExpanded;
+                  });
+                }, _isCustomerExpanded, [
                   _buildSubMenuItem(
                       'Manage Customers', Icons.people_outline, 49),
                   _buildSubMenuItem('Customer Orders', Icons.list_alt, 50),
                   _buildSubMenuItem('Loyalty Points', Icons.star_border, 51),
                   _buildSubMenuItem('Feedback & Reviews', Icons.comment, 52),
-                ],
-                // Expandable Marketing Tools Menu
-                ListTile(
-                  leading: Icon(Icons.local_offer, color: Colors.black),
-                  title: Text(
-                    'Marketing Tools',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isMarketingExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isMarketingExpanded = !_isMarketingExpanded;
-                    });
-                  },
-                ),
-                if (_isMarketingExpanded) ...[
+                ]),
+                _buildExpandableMenu('Marketing Tools', Icons.local_offer, () {
+                  setState(() {
+                    _isMarketingExpanded = !_isMarketingExpanded;
+                  });
+                }, _isMarketingExpanded, [
                   _buildSubMenuItem('Discount Codes', Icons.local_offer, 53),
                   _buildSubMenuItem('Campaign Management', Icons.campaign, 54),
                   _buildSubMenuItem(
                       'Push Notifications', Icons.notifications_active, 55),
-                ],
-                // Expandable Settings Menu
-                ListTile(
-                  leading: Icon(Icons.settings, color: Colors.black),
-                  title: Text(
-                    'Settings',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns: _isSettingsExpanded
-                        ? 0.5
-                        : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isSettingsExpanded = !_isSettingsExpanded;
-                    });
-                  },
-                ),
-                if (_isSettingsExpanded) ...[
-                  _buildSubMenuItem('User Management', Icons.person_add, 56),
+                ]),
+                _buildExpandableMenu('Settings', Icons.settings, () {
+                  setState(() {
+                    _isSettingsExpanded = !_isSettingsExpanded;
+                  });
+                }, _isSettingsExpanded, [
+                  _buildSubMenuItem('User  Management', Icons.person_add, 56),
                   _buildSubMenuItem('Roles & Permissions', Icons.security, 57),
                   _buildSubMenuItem('Payment Settings', Icons.payment, 58),
                   _buildSubMenuItem('Tax Settings', Icons.attach_money, 59),
                   _buildSubMenuItem('Country Settings', Icons.language, 60),
                   _buildSubMenuItem(
                       'Currency Settings', Icons.monetization_on, 61),
-                ],
-                // Expandable Help & Support Menu
-                ListTile(
-                  leading: Icon(Icons.help_outline, color: Colors.black),
-                  title: Text(
-                    'Help & Support',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedRotation(
-                    turns:
-                        _isHelpExpanded ? 0.5 : 0.0, // 180 degrees if expanded
-                    duration: Duration(milliseconds: 90),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isHelpExpanded = !_isHelpExpanded;
-                    });
-                  },
-                ),
-                if (_isHelpExpanded) ...[
-                  _buildSubMenuItem('User Guide', Icons.book, 62),
+                ]),
+                _buildExpandableMenu('Help & Support', Icons.help_outline, () {
+                  setState(() {
+                    _isHelpExpanded = !_isHelpExpanded;
+                  });
+                }, _isHelpExpanded, [
+                  _buildSubMenuItem('User  Guide', Icons.book, 62),
                   _buildSubMenuItem('FAQs', Icons.question_answer, 63),
                   _buildSubMenuItem('Contact Support', Icons.support_agent, 64),
-                ],
+                ]),
               ],
             ),
           )
@@ -450,42 +232,30 @@ class _SidebarMenuState extends State<SidebarMenu>
     );
   }
 
-  Widget _buildMenuItem(
-      {required IconData icon, required String title, required int index}) {
-    bool isSelected = widget.selectedIndex == index;
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 90),
-      curve: Curves.easeInOut,
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.primaryGreen : Colors.transparent,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: ListTile(
-        leading: Icon(icon,
-            color: isSelected
-                ? AppColors.white
-                : AppColors.black), // Change icon color based on selection
-        title: Text(
-          title,
-          style: TextStyle(
-            color: isSelected
-                ? AppColors.white
-                : AppColors.black, // Change text color based on selection
-            fontSize: 16, // Reduce text size
+  Widget _buildExpandableMenu(String title, IconData icon, VoidCallback onTap,
+      bool isExpanded, List<Widget> subMenuItems) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(icon, color: Colors.black),
+          title:
+              Text(title, style: TextStyle(color: Colors.black, fontSize: 16)),
+          trailing: AnimatedRotation(
+            turns: isExpanded ? 0.5 : 0.0,
+            duration: Duration(milliseconds: 200),
+            child: Icon(Icons.expand_more, color: Colors.black),
           ),
+          onTap: onTap,
         ),
-        onTap: () {
-          widget.onItemTapped(index);
-        },
-      ),
+        if (isExpanded) ...subMenuItems,
+      ],
     );
   }
 
   Widget _buildSubMenuItem(String title, IconData icon, int index) {
     bool isSelected = widget.selectedIndex == index;
     return AnimatedContainer(
-      duration: Duration(milliseconds: 90),
-      curve: Curves.easeInOut,
+      duration: Duration(milliseconds: 200),
       padding: EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
         color: isSelected ? AppColors.primaryGreen : Colors.transparent,
@@ -498,7 +268,7 @@ class _SidebarMenuState extends State<SidebarMenu>
           title,
           style: TextStyle(
             color: isSelected ? AppColors.white : AppColors.black,
-            fontSize: 14, // Reduce text size for sub-menu items
+            fontSize: 14,
           ),
         ),
         onTap: () {
