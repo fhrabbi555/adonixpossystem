@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../layouts/sidebar_menu.dart';
 import '../overview/web_overview_screen.dart';
+import '../sale_summary/web_sale_summary_screen.dart';
 
 class WebHomeScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
   final List<Widget> _pages = [
     WebOverviewScreen(),
     WebOverviewScreen(),
-    UsersListScreen(),
+    WebSaleSummaryScreen(),
     AddUserScreen(),
     SettingsScreen(),
     GeneralSettingsScreen(),

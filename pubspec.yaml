@@ -13,6 +13,10 @@ dependencies:
   get: ^4.6.6
   animated_tree_view: ^2.1.0
   fl_chart: ^0.69.0
+  google_fonts: ^6.1.0
+
+
+
   flutter_localizations:
     sdk: flutter
   intl: any
