@@ -153,6 +153,8 @@ class WebOverviewScreen extends StatelessWidget {
     );
   }
 
+  // Improved Metric Card and Recent Transactions Implementation
+
   Widget _buildMetricCard({
     required String title,
     required String value,
@@ -161,6 +163,137 @@ class WebOverviewScreen extends StatelessWidget {
     required String trend,
     required bool isPositive,
   }) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.1), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with icon and trend
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Icon with background
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: color, size: 24),
+              ),
+              // Trend indicator
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isPositive ? Colors.green[50] : Colors.red[50],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      isPositive ? Icons.arrow_upward : Icons.arrow_downward,
+                      color: isPositive ? Colors.green[700] : Colors.red[700],
+                      size: 14,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      trend,
+                      style: TextStyle(
+                        color: isPositive ? Colors.green[700] : Colors.red[700],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // Spacer
+          SizedBox(height: 16),
+
+          // Value
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+              letterSpacing: -0.5,
+            ),
+          ),
+
+          // Title
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+
+          // Progress indicator
+          SizedBox(height: 12),
+          LinearProgressIndicator(
+            value: 0.7, // You can make this dynamic based on your needs
+            backgroundColor: color.withOpacity(0.1),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Improved Recent Transactions Implementation
+  Widget _buildRecentTransactions() {
+    // Sample transaction data - Replace this with your actual data from controller
+    final List<Map<String, dynamic>> transactions = [
+      {
+        'id': 'TX123',
+        'amount': '\$200',
+        'date': '2024-11-16',
+        'status': 'Completed',
+        'customer': 'John Doe',
+      },
+      {
+        'id': 'TX124',
+        'amount': '\$350',
+        'date': '2024-11-16',
+        'status': 'Pending',
+        'customer': 'Jane Smith',
+      },
+      {
+        'id': 'TX125',
+        'amount': '\$175',
+        'date': '2024-11-15',
+        'status': 'Completed',
+        'customer': 'Mike Johnson',
+      },
+      {
+        'id': 'TX126',
+        'amount': '\$420',
+        'date': '2024-11-15',
+        'status': 'Failed',
+        'customer': 'Sarah Williams',
+      },
+    ];
+
     return Container(
       padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -176,44 +309,155 @@ class WebOverviewScreen extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(icon, color: color, size: 32),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: isPositive ? Colors.green[50] : Colors.red[50],
-                  borderRadius: BorderRadius.circular(12),
+              Text(
+                'Recent Transactions',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
-                child: Text(
-                  trend,
-                  style: TextStyle(
-                    color: isPositive ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.refresh),
+                label: Text('Refresh'),
+                onPressed: () {
+                  // Add refresh functionality
+                },
               ),
             ],
           ),
-          SizedBox(height: 16),
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 16,
+          SizedBox(height: 24),
+
+          // Table Header
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Transaction ID',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Customer',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Amount',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Status',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+
+          SizedBox(height: 12),
+          Divider(),
+
+          // Transactions List
+          ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: transactions.length,
+            separatorBuilder: (context, index) => Divider(),
+            itemBuilder: (context, index) {
+              final transaction = transactions[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        transaction['id'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        transaction['customer'],
+                        style: TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        transaction['amount'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: transaction['status'] == 'Completed'
+                              ? Colors.green[50]
+                              : transaction['status'] == 'Pending'
+                                  ? Colors.orange[50]
+                                  : Colors.red[50],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          transaction['status'],
+                          style: TextStyle(
+                            color: transaction['status'] == 'Completed'
+                                ? Colors.green[700]
+                                : transaction['status'] == 'Pending'
+                                    ? Colors.orange[700]
+                                    : Colors.red[700],
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -295,90 +539,6 @@ class WebOverviewScreen extends StatelessWidget {
         Expanded(
           flex: 1,
           child: _buildUserActivity(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRecentTransactions() {
-    return Container(
-      padding: EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Recent Transactions',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          SizedBox(height: 24),
-          Obx(() => DataTable(
-                columns: [
-                  DataColumn(label: Text('Transaction ID')),
-                  DataColumn(label: Text('Amount')),
-                  DataColumn(label: Text('Date')),
-                  DataColumn(label: Text('Status')),
-                ],
-                rows: [
-                  _buildTransactionRow(
-                      'TX123', '\$200', '2024-11-16', 'Completed'),
-                  _buildTransactionRow(
-                      'TX124', '\$350', '2024-11-16', 'Pending'),
-                  _buildTransactionRow(
-                      'TX125', '\$175', '2024-11-15', 'Completed'),
-                  _buildTransactionRow(
-                      'TX126', '\$420', '2024-11-15', 'Failed'),
-                ],
-              )),
-        ],
-      ),
-    );
-  }
-
-  DataRow _buildTransactionRow(
-      String id, String amount, String date, String status) {
-    return DataRow(
-      cells: [
-        DataCell(Text(id)),
-        DataCell(Text(amount)),
-        DataCell(Text(date)),
-        DataCell(
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: status == 'Completed'
-                  ? Colors.green[50]
-                  : status == 'Pending'
-                      ? Colors.orange[50]
-                      : Colors.red[50],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              status,
-              style: TextStyle(
-                color: status == 'Completed'
-                    ? Colors.green
-                    : status == 'Pending'
-                        ? Colors.orange
-                        : Colors.red,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
         ),
       ],
     );
