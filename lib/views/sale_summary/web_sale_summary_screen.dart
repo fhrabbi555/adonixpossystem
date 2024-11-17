@@ -315,67 +315,71 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
 
   Widget _buildSalesTable() {
     return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                'Sales History',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2D3748),
-                ),
+      child: SingleChildScrollView(
+        // Add scroll view here
+        child: Container(
+          height: 800, // Increased height for the sales card
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  headingRowColor: MaterialStateProperty.all(
-                    const Color(0xFFF8FAFC),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  'Sales History',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D3748),
                   ),
-                  columnSpacing: 40,
-                  columns: [
-                    _buildDataColumn('Date'),
-                    _buildDataColumn('Total Sales'),
-                    _buildDataColumn('Orders'),
-                    _buildDataColumn('Avg. Order Value'),
-                    _buildDataColumn('Growth'),
-                    _buildDataColumn('Top Selling Items'),
-                  ],
-                  rows: salesData.map((data) {
-                    return DataRow(
-                      cells: [
-                        _buildDataCell(
-                            DateFormat('MMM dd, yyyy').format(data.date)),
-                        _buildDataCell(
-                            currencyFormatter.format(data.totalSales)),
-                        _buildDataCell(data.numberOfOrders.toString()),
-                        _buildDataCell(
-                            currencyFormatter.format(data.averageOrderValue)),
-                        _buildDataCell('${data.growth}%'),
-                        _buildDataCell(data.topSellingItems.join(', ')),
-                      ],
-                    );
-                  }).toList(),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    headingRowColor: MaterialStateProperty.all(
+                      const Color(0xFFF8FAFC),
+                    ),
+                    columnSpacing: 40,
+                    columns: [
+                      _buildDataColumn('Date'),
+                      _buildDataColumn('Total Sales'),
+                      _buildDataColumn('Orders'),
+                      _buildDataColumn('Avg. Order Value'),
+                      _buildDataColumn('Growth'),
+                      _buildDataColumn('Top Selling Items'),
+                    ],
+                    rows: salesData.map((data) {
+                      return DataRow(
+                        cells: [
+                          _buildDataCell(
+                              DateFormat('MMM dd, yyyy').format(data.date)),
+                          _buildDataCell(
+                              currencyFormatter.format(data.totalSales)),
+                          _buildDataCell(data.numberOfOrders.toString()),
+                          _buildDataCell(
+                              currencyFormatter.format(data.averageOrderValue)),
+                          _buildDataCell('${data.growth}%'),
+                          _buildDataCell(data.topSellingItems.join(', ')),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
