@@ -4,7 +4,7 @@ class OverviewController extends GetxController {
   var totalUsers = '1,500'.obs;
   var newUsers = '150'.obs; // New metric
   var totalSales = '\$50,000'.obs;
-  var totalRevenue = '\$75,000'.obs; // New metric
+  var totalRevenue = '\75,000'.obs; // New metric
   var activeSessions = '300'.obs;
   var conversionRate = '2.5%'.obs; // New metric
 
