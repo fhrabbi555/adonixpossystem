@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../InventoryOverview/web_inventory_overview_screen.dart';
 import '../layouts/sidebar_menu.dart';
 import '../overview/web_overview_screen.dart';
 import '../sale_summary/web_sale_summary_screen.dart';
@@ -15,8 +16,8 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     WebOverviewScreen(),
     WebOverviewScreen(),
     WebSaleSummaryScreen(),
-    AddUserScreen(),
-    SettingsScreen(),
+    WebInventoryOverviewScreen(),
+    WebInventoryOverviewScreen(),
     GeneralSettingsScreen(),
     AccountSettingsScreen(),
     PaymentSettingsScreen(),

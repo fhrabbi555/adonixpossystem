@@ -22,37 +22,26 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
       totalSales: 1500.0,
       numberOfOrders: 25,
       averageOrderValue: 60.0,
-      topSellingItems: ['Product A', 'Product B', 'Product C'],
+      topSellingItems: ['Product A', 'Product B'],
       growth: 12.5,
     ),
-
     SaleSummaryData(
-      date: DateTime.now(),
-      totalSales: 1500.0,
-      numberOfOrders: 25,
-      averageOrderValue: 60.0,
-      topSellingItems: ['Product A', 'Product B', 'Product C'],
-      growth: 12.5,
+      date: DateTime.now().subtract(Duration(days: 1)),
+      totalSales: 2000.0,
+      numberOfOrders: 30,
+      averageOrderValue: 66.67,
+      topSellingItems: ['Product C', 'Product D'],
+      growth: 15.0,
     ),
-
     SaleSummaryData(
-      date: DateTime.now(),
-      totalSales: 1500.0,
-      numberOfOrders: 25,
-      averageOrderValue: 60.0,
-      topSellingItems: ['Product A', 'Product B', 'Product C'],
-      growth: 12.5,
+      date: DateTime.now().subtract(Duration(days: 2)),
+      totalSales: 1800.0,
+      numberOfOrders: 28,
+      averageOrderValue: 64.29,
+      topSellingItems: ['Product E', 'Product F'],
+      growth: 10.0,
     ),
-
-    SaleSummaryData(
-      date: DateTime.now(),
-      totalSales: 1500.0,
-      numberOfOrders: 25,
-      averageOrderValue: 60.0,
-      topSellingItems: ['Product A', 'Product B', 'Product C'],
-      growth: 12.5,
-    ),
-    // Add more sample data
+    // Add more sample data as needed
   ];
 
   @override
@@ -301,7 +290,7 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
                 Icon(icon, color: Colors.white.withOpacity(0.9)),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 8),
             Text(
               value,
               style: GoogleFonts.poppins(
