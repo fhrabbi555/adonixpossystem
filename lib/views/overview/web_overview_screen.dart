@@ -93,10 +93,10 @@ class WebOverviewScreen extends StatelessWidget {
             ],
           ),
           ElevatedButton.icon(
-            icon: Icon(Icons.download),
-            label: Text('Export Report'),
+            icon: Icon(Icons.download, color: Colors.white),
+            label: Text('Export Report', style: TextStyle(color: Colors.white)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: AppColors.primaryGreen,
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -118,8 +118,8 @@ class WebOverviewScreen extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: [
         _buildMetricCard(
-          title: 'Total Users',
-          value: controller.totalUsers.value,
+          title: 'Total Customer',
+          value: controller.totalCustomer.value,
           icon: Icons.people_outline,
           color: Colors.blue,
           trend: '+12.5%',
@@ -134,17 +134,17 @@ class WebOverviewScreen extends StatelessWidget {
           isPositive: true,
         ),
         _buildMetricCard(
-          title: 'Conversion Rate',
-          value: '${controller.conversionRate.value}%',
+          title: 'Total Order',
+          value: '${controller.totalOrder.value}%',
           icon: Icons.trending_up,
           color: Colors.orange,
           trend: '-2.1%',
           isPositive: false,
         ),
         _buildMetricCard(
-          title: 'Active Sessions',
-          value: controller.activeSessions.value,
-          icon: Icons.devices,
+          title: 'Today Sales',
+          value: controller.todaySale.value,
+          icon: Icons.shopping_cart,
           color: Colors.purple,
           trend: '+5.3%',
           isPositive: true,
@@ -562,7 +562,7 @@ class WebOverviewScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'User Activity',
+            'Recent Activity',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
