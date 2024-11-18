@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../InventoryOverview/web_inventory_overview_screen.dart';
 import '../layouts/sidebar_menu.dart';
+import '../order_list/web_order_list_screen.dart';
 import '../overview/web_overview_screen.dart';
 import '../pos_invoice/web_pos_invoice_screen.dart';
 import '../sale_summary/web_sale_summary_screen.dart';
@@ -23,6 +24,7 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     WebPOSInvoiceScreen(),
     // Order Menu
     WebPOSInvoiceScreen(),
+    WebOrderListScreen(),
   ];
 
   void _onItemTapped(int index) {
