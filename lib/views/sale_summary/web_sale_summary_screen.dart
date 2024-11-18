@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+class SaleSummaryData {
+  final String productName;
+  final int quantity;
+  final double price;
+  final DateTime date;
+
+  SaleSummaryData({
+    required this.productName,
+    required this.quantity,
+    required this.price,
+    required this.date,
+  });
+}
+
 class WebSaleSummaryScreen extends StatefulWidget {
   const WebSaleSummaryScreen({Key? key}) : super(key: key);
 
@@ -18,58 +32,42 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
 
   final List<SaleSummaryData> salesData = [
     SaleSummaryData(
-      date: DateTime.now(),
-      totalSales: 1500.0,
-      numberOfOrders: 25,
-      averageOrderValue: 60.0,
-      topSellingItems: ['Product A', 'Product B'],
-      growth: 12.5,
+      productName: 'Laptop XPS 15',
+      quantity: 10,
+      price: 1299.99,
+      date: DateTime.now().subtract(const Duration(days: 5)),
     ),
     SaleSummaryData(
-      date: DateTime.now().subtract(Duration(days: 1)),
-      totalSales: 2000.0,
-      numberOfOrders: 30,
-      averageOrderValue: 66.67,
-      topSellingItems: ['Product C', 'Product D'],
-      growth: 15.0,
+      productName: 'Wireless Mouse',
+      quantity: 15,
+      price: 29.99,
+      date: DateTime.now().subtract(const Duration(days: 3)),
     ),
-    SaleSummaryData(
-      date: DateTime.now().subtract(Duration(days: 2)),
-      totalSales: 1800.0,
-      numberOfOrders: 28,
-      averageOrderValue: 64.29,
-      topSellingItems: ['Product E', 'Product F'],
-      growth: 10.0,
-    ),
-    // Add more sample data as needed
+    // Add more sample sales data as needed
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FB),
-      body: Row(
-        // Use Row to align content to the right
-        children: [
-          Expanded(
-            // This allows the content to adjust to the right side
-            child: Container(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 32),
-                  _buildDateFilter(),
-                  const SizedBox(height: 32),
-                  _buildSummaryCards(),
-                  const SizedBox(height: 32),
-                  _buildSalesTable(),
-                ],
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            const SizedBox(height: 32),
+            _buildDateFilter(),
+            const SizedBox(height: 32),
+            _buildSummaryCards(),
+            const SizedBox(height: 32),
+            Expanded(
+              child: Center(
+                child: _buildSalesTable(),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -130,131 +128,133 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
     );
   }
 
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 20),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Theme.of(context).primaryColor,
-        backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    );
-  }
-
   Widget _buildDateFilter() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.date_range, color: Color(0xFF718096)),
+          Expanded(
+            child: GestureDetector(
+              onTap: () async {
+                final pickedStartDate = await showDatePicker(
+                  context: context,
+                  initialDate: selectedStartDate,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime.now(),
+                );
+                if (pickedStartDate != null) {
+                  setState(() {
+                    selectedStartDate = pickedStartDate;
+                  });
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Start Date',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: const Color(0xFF718096),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    DateFormat('MMM dd, yyyy').format(selectedStartDate),
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF2D3748),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(width: 16),
-          _buildDateButton(
-            date: selectedStartDate,
-            onPressed: () async {
-              final picked = await showDatePicker(
-                context: context,
-                initialDate: selectedStartDate,
-                firstDate: DateTime(2020),
-                lastDate: DateTime.now(),
-              );
-              if (picked != null) setState(() => selectedStartDate = picked);
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text('to', style: TextStyle(color: Color(0xFF718096))),
-          ),
-          _buildDateButton(
-            date: selectedEndDate,
-            onPressed: () async {
-              final picked = await showDatePicker(
-                context: context,
-                initialDate: selectedEndDate,
-                firstDate: DateTime(2020),
-                lastDate: DateTime.now(),
-              );
-              if (picked != null) setState(() => selectedEndDate = picked);
-            },
+          Expanded(
+            child: GestureDetector(
+              onTap: () async {
+                final pickedEndDate = await showDatePicker(
+                  context: context,
+                  initialDate: selectedEndDate,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime.now(),
+                );
+                if (pickedEndDate != null) {
+                  setState(() {
+                    selectedEndDate = pickedEndDate;
+                  });
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'End Date',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: const Color(0xFF718096),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    DateFormat('MMM dd, yyyy').format(selectedEndDate),
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF2D3748),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDateButton({
-    required DateTime date,
-    required VoidCallback onPressed,
-  }) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        backgroundColor: const Color(0xFFF7FAFC),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: Text(
-        DateFormat('MMM dd, yyyy').format(date),
-        style: const TextStyle(
-          color: Color(0xFF2D3748),
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
   Widget _buildSummaryCards() {
+    final totalSales = salesData.fold(
+      0.0,
+      (sum, sale) => sum + (sale.quantity * sale.price),
+    );
+    final totalOrders = salesData.length;
+    final averageOrderValue = totalSales / totalOrders;
+
     return Row(
       children: [
         _buildSummaryCard(
           title: 'Total Sales',
-          value: currencyFormatter.format(25000),
-          subtitle: '+12.5% from last period',
-          icon: Icons.trending_up,
-          gradient: const LinearGradient(
-            colors: [Color(0xFF6366F1), Color(0xFF818CF8)],
-          ),
+          value: currencyFormatter.format(totalSales),
+          icon: Icons.attach_money,
+          color: Colors.green,
         ),
-        const SizedBox(width: 24),
+        const SizedBox(width: 16),
         _buildSummaryCard(
-          title: 'Orders',
-          value: '350',
-          subtitle: '+8.2% from last period',
-          icon: Icons.shopping_cart_outlined,
-          gradient: const LinearGradient(
-            colors: [Color(0xFF10B981), Color(0xFF34D399)],
-          ),
+          title: 'Total Orders',
+          value: totalOrders.toString(),
+          icon: Icons.shopping_cart,
+          color: Colors.blue,
         ),
-        const SizedBox(width: 24),
+        const SizedBox(width: 16),
         _buildSummaryCard(
           title: 'Average Order Value',
-          value: currencyFormatter.format(71.43),
-          subtitle: '+5.8% from last period',
-          icon: Icons.analytics_outlined,
-          gradient: const LinearGradient(
-            colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)],
-          ),
+          value: currencyFormatter.format(averageOrderValue),
+          icon: Icons.equalizer,
+          color: Colors.orange,
         ),
       ],
     );
@@ -263,56 +263,53 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
   Widget _buildSummaryCard({
     required String title,
     required String value,
-    required String subtitle,
     required IconData icon,
-    required Gradient gradient,
+    required Color color,
   }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: gradient.colors.first.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Icon(icon, color: Colors.white.withOpacity(0.9)),
-              ],
-            ),
-            SizedBox(height: 8),
-            Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Colors.white.withOpacity(0.9),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 20,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Text(
-              subtitle,
+              value,
+              style: GoogleFonts.inter(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF2D3748),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
               style: GoogleFonts.inter(
                 fontSize: 14,
-                color: Colors.white.withOpacity(0.7),
+                color: const Color(0xFF718096),
               ),
             ),
           ],
@@ -323,72 +320,102 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
 
   Widget _buildSalesTable() {
     return Container(
-      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Sales Data',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF2D3748),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: DataTable(
+              headingRowColor: MaterialStateProperty.all(Colors.grey[50]),
+              columns: const [
+                DataColumn(label: Text('Product')),
+                DataColumn(label: Text('Quantity')),
+                DataColumn(label: Text('Price')),
+                DataColumn(label: Text('Date')),
+              ],
+              rows: salesData
+                  .where((sale) =>
+                      sale.date.isAfter(selectedStartDate) &&
+                      sale.date.isBefore(selectedEndDate.add(const Duration(
+                          days: 1)))) // Include sales on the end date
+                  .map(
+                    (sale) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            sale.productName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            sale.quantity.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            currencyFormatter.format(sale.price),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            DateFormat('MMM dd, yyyy').format(sale.date),
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
           ),
-          const SizedBox(height: 16),
-          DataTable(
-            columns: const [
-              DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Sales')),
-              DataColumn(label: Text('Orders')),
-              DataColumn(label: Text('Avg Order Value')),
-              DataColumn(label: Text('Top Selling Items')),
-              DataColumn(label: Text('Growth')),
-            ],
-            rows: salesData
-                .map((data) => DataRow(cells: [
-                      DataCell(
-                          Text(DateFormat('MMM dd, yyyy').format(data.date))),
-                      DataCell(Text(currencyFormatter.format(data.totalSales))),
-                      DataCell(Text(data.numberOfOrders.toString())),
-                      DataCell(Text(
-                          currencyFormatter.format(data.averageOrderValue))),
-                      DataCell(Text(data.topSellingItems.join(', '))),
-                      DataCell(Text('${data.growth}%')),
-                    ]))
-                .toList(),
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class SaleSummaryData {
-  final DateTime date;
-  final double totalSales;
-  final int numberOfOrders;
-  final double averageOrderValue;
-  final List<String> topSellingItems;
-  final double growth;
-
-  SaleSummaryData({
-    required this.date,
-    required this.totalSales,
-    required this.numberOfOrders,
-    required this.averageOrderValue,
-    required this.topSellingItems,
-    required this.growth,
-  });
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon),
+      label: Text(label),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Theme.of(context).primaryColor,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
+  }
 }
