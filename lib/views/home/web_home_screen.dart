@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../InventoryOverview/web_inventory_overview_screen.dart';
 import '../layouts/sidebar_menu.dart';
 import '../overview/web_overview_screen.dart';
+import '../pos_invoice/web_pos_invoice_screen.dart';
 import '../sale_summary/web_sale_summary_screen.dart';
 
 class WebHomeScreen extends StatefulWidget {
@@ -17,10 +18,10 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     WebOverviewScreen(),
     WebSaleSummaryScreen(),
     WebInventoryOverviewScreen(),
-    WebInventoryOverviewScreen(),
+    WebPOSInvoiceScreen(),
     GeneralSettingsScreen(),
     AccountSettingsScreen(),
-    PaymentSettingsScreen(),
+    WebPOSInvoiceScreen(),
   ];
 
   void _onItemTapped(int index) {
