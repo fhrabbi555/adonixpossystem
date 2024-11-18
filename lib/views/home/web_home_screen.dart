@@ -19,8 +19,9 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     WebSaleSummaryScreen(),
     WebInventoryOverviewScreen(),
     WebPOSInvoiceScreen(),
-    GeneralSettingsScreen(),
-    AccountSettingsScreen(),
+    WebPOSInvoiceScreen(),
+    WebPOSInvoiceScreen(),
+    // Order Menu
     WebPOSInvoiceScreen(),
   ];
 
@@ -46,68 +47,6 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-// Dummy screens for GeneralSettingsScreen, AccountSettingsScreen, and PaymentSettingsScreen
-
-class UsersListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Users List')),
-      body: Center(child: Text('Users List Screen')),
-    );
-  }
-}
-
-class AddUserScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Add User')),
-      body: Center(child: Text('Add User Screen')),
-    );
-  }
-}
-
-class GeneralSettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('General Settings')),
-      body: Center(child: Text('This is the General Settings Screen')),
-    );
-  }
-}
-
-class AccountSettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Account Settings')),
-      body: Center(child: Text('This is the Account Settings Screen')),
-    );
-  }
-}
-
-class PaymentSettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Payment Settings')),
-      body: Center(child: Text('This is the Payment Settings Screen')),
-    );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Payment Settings')),
-      body: Center(child: Text('This is the Payment Settings Screen')),
     );
   }
 }

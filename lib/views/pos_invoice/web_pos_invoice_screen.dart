@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-class AppColors {
-  static const Color primaryGreen = Color(0xFF00B894);
-  static const Color secondaryBlue = Color(0xFF4834D4);
-  static const Color backgroundColor = Color(0xFFF8F9FB);
-  static const Color cardColor = Colors.white;
-  static const Color textDark = Color(0xFF2D3436);
-  static const Color textLight = Color(0xFF636E72);
-  static const Color accent = Color(0xFFFF7675);
-}
+import '../../utility /app_color.dart';
 
 class WebPOSInvoiceScreen extends StatefulWidget {
   const WebPOSInvoiceScreen({Key? key}) : super(key: key);
@@ -282,9 +273,9 @@ class _WebPOSInvoiceScreenState extends State<WebPOSInvoiceScreen> {
                                     child: Text(
                                       'Complete Payment',
                                       style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.white),
                                     ),
                                   ),
                                 ),

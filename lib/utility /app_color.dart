@@ -17,6 +17,10 @@ class AppColors {
       primaryGreen; // Color for unselected items
 
   static const Color secondaryGray = Color(0xFFF5F6FA);
+
+  static const Color secondaryBlue = Color(0xFF4834D4);
+  static const Color cardColor = Colors.white;
   static const Color textDark = Color(0xFF2D3436);
-  static const Color textLight = Color(0xFF7F8C8D);
+  static const Color textLight = Color(0xFF636E72);
+  static const Color accent = Color(0xFFFF7675);
 }
