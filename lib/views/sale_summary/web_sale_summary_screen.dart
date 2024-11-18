@@ -84,24 +84,6 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
       tax: 5.0,
       status: 'Processing',
     ),
-    SaleSummaryData(
-      productName: 'External Hard Drive',
-      quantity: 6,
-      price: 99.99,
-      date: DateTime.now().subtract(const Duration(days: 6)),
-      discount: 15.0,
-      tax: 10.0,
-      status: 'Completed',
-    ),
-    SaleSummaryData(
-      productName: 'Smartwatch',
-      quantity: 4,
-      price: 199.99,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-      discount: 25.0,
-      tax: 15.0,
-      status: 'Failed',
-    ),
   ];
 
   Color _getStatusColor(String status) {
@@ -126,7 +108,7 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FB),
+      backgroundColor: Colors.grey[100],
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -150,43 +132,89 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).primaryColor.withOpacity(0.1),
-            Theme.of(context).primaryColor.withOpacity(0.05),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Sales Summary',
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF2D3748),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              DateFormat('MMMM dd, yyyy').format(DateTime.now()),
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: const Color(0xFF718096),
+              ),
+            ),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sales Summary',
-                style: GoogleFonts.poppins(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2D3748),
-                ),
+        Row(
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                // Handle Export action
+              },
+              icon: Icon(
+                Icons.download,
+                color: Colors.purple,
+                size: 16,
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Track your business performance and growth',
+              label: Text(
+                'Export',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
-                  color: const Color(0xFF718096),
+                  fontSize: 14,
+                  color: Colors.purple,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ],
-          ),
-        ],
-      ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                side: BorderSide(color: Colors.grey[300]!),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              ),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                // Handle Add Product action
+              },
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 16,
+              ),
+              label: Text(
+                'Add Product',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
