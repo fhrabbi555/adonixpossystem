@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../utility /app_color.dart';
 
@@ -62,12 +61,58 @@ class _WebReturnInvoiceScreenState extends State<WebReturnInvoiceScreen> {
             const SizedBox(height: 32),
             _buildSubmitButton(),
             const SizedBox(height: 32),
-            _buildSearchBar(),
+            _buildSearchSortFilter(),
             const SizedBox(height: 16),
             _buildReturnInvoiceTable(filteredInvoices),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSearchSortFilter() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                searchQuery = value;
+              });
+            },
+            decoration: InputDecoration(
+              hintText: 'Search products...',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.filter_list),
+          label: const Text('Filter'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryGreen,
+            foregroundColor: Colors.white,
+          ),
+        ),
+        const SizedBox(width: 16),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.sort),
+          label: const Text('Sort'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryGreen,
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 
@@ -77,13 +122,12 @@ class _WebReturnInvoiceScreenState extends State<WebReturnInvoiceScreen> {
       children: [
         Text(
           'Return Invoice',
-          style: GoogleFonts.poppins(
+          style: TextStyle(
             fontSize: 32,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
             color: Colors.grey[800],
           ),
         ),
-        Spacer(),
         IconButton(
           icon: Icon(Icons.help_outline, color: AppColors.primaryGreen),
           onPressed: _showHelpDialog,
@@ -264,28 +308,6 @@ class _WebReturnInvoiceScreenState extends State<WebReturnInvoiceScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         ),
       ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search in return invoices...',
-        prefixIcon: Icon(Icons.search, color: AppColors.primaryGreen),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.primaryGreen),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.primaryGreen),
-        ),
-      ),
-      onChanged: (value) {
-        setState(() {
-          searchQuery = value;
-        });
-      },
     );
   }
 
