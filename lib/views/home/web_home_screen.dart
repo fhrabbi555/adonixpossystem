@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../InventoryOverview/web_inventory_overview_screen.dart';
+import '../add_purchase/web_add_purchase_screen.dart';
 import '../cancel_order/web_cancel_order_list_screen.dart';
 import '../complete_order/web_complete_order_list_screen.dart';
 import '../layouts/sidebar_menu.dart';
@@ -33,9 +34,9 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     WebCompleteOrderListScreen(),
     WebCancelOrderListScreen(),
 
-    //
+    //Purchase Menu
     WebPurchaseItemScreen(),
-    WebPurchaseItemScreen(),
+    WebAddPurchaseScreen(),
     WebPurchaseItemScreen(),
     WebPurchaseItemScreen(),
   ];

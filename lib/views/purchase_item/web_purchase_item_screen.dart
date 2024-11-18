@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utility /app_color.dart';
+
 class WebPurchaseItemScreen extends StatefulWidget {
   const WebPurchaseItemScreen({Key? key}) : super(key: key);
 
@@ -467,8 +469,4 @@ class PurchaseItem {
     required this.date,
     required this.currentStock,
   });
-}
-
-class AppColors {
-  static const Color primaryGreen = Color(0xFF4CAF50);
 }
