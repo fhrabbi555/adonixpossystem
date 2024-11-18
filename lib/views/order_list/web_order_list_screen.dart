@@ -18,7 +18,6 @@ class WebOrderListScreen extends StatelessWidget {
       status: OrderStatus.processing,
       date: "2024-11-18",
     ),
-    // Add more sample orders as needed
   ];
 
   WebOrderListScreen({Key? key}) : super(key: key);
@@ -159,14 +158,81 @@ class WebOrderListScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: orders.length,
-        separatorBuilder: (context, index) => const Divider(),
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return _buildOrderCard(order);
-        },
+      child: Column(
+        children: [
+          // Table Headers
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Order No',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Quantity',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Price',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Status',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Date',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.more_vert, color: Colors.transparent),
+                  onPressed: null, // Placeholder for alignment
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+
+          // Orders List
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: orders.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                final order = orders[index];
+                return _buildOrderCard(order);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -252,15 +318,13 @@ class WebOrderListScreen extends StatelessWidget {
         textColor = Colors.green[700]!;
         text = 'Delivered';
         break;
-
-      // Add more cases as needed
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         text,
