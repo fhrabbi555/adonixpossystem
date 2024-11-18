@@ -312,76 +312,154 @@ class _WebReturnInvoiceScreenState extends State<WebReturnInvoiceScreen> {
   }
 
   Widget _buildReturnInvoiceTable(List<Map<String, dynamic>> filteredInvoices) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 300,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: DataTable(
-                  headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
-                  columns: const [
-                    DataColumn(
-                        label: Text('Product',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Quantity',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Reason',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Status',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Date',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Actions',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                  ],
-                  rows: filteredInvoices.take(10).map((invoice) {
-                    return DataRow(cells: [
-                      DataCell(Text(invoice['product'])),
-                      DataCell(Text(invoice['quantity'].toString())),
-                      DataCell(Text(invoice['reason'])),
-                      DataCell(_buildStatusChip(invoice['status'])),
-                      DataCell(Text(invoice['date'])),
-                      DataCell(Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.remove_red_eye,
-                                color: Colors.green),
-                            onPressed: () {},
-                          ),
-                        ],
-                      )),
-                    ]);
-                  }).toList(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Table Headers
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Product Name',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
                 ),
+                Expanded(
+                  child: Text(
+                    'Quantity',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Reason',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Status',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Date',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Actions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+          // Table Content
+          SizedBox(
+            height: 400, // Restrict height to make the table scrollable
+            child: Scrollbar(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: filteredInvoices.length,
+                separatorBuilder: (context, index) => const Divider(),
+                itemBuilder: (context, index) {
+                  final invoice = filteredInvoices[index];
+                  return Row(
+                    children: [
+                      Expanded(child: Text(invoice['product'])),
+                      Expanded(child: Text('${invoice['quantity']}')),
+                      Expanded(child: Text(invoice['reason'])),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: invoice['status'] == 'Completed'
+                                ? Colors.green[50]
+                                : Colors.orange[50],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            invoice['status'],
+                            style: TextStyle(
+                              color: invoice['status'] == 'Completed'
+                                  ? Colors.green[700]
+                                  : Colors.orange[700],
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          invoice['date'],
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.visibility),
+                              color: Colors.blue,
+                              onPressed: () {
+                                // View details action
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              color: Colors.orange,
+                              onPressed: () {
+                                // Edit action
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
