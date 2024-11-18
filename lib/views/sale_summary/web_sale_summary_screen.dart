@@ -48,20 +48,28 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FB),
-      body: Container(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 32),
-            _buildDateFilter(),
-            const SizedBox(height: 32),
-            _buildSummaryCards(),
-            const SizedBox(height: 32),
-            _buildSalesTable(),
-          ],
-        ),
+      body: Row(
+        // Use Row to align content to the right
+        children: [
+          Expanded(
+            // This allows the content to adjust to the right side
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 32),
+                  _buildDateFilter(),
+                  const SizedBox(height: 32),
+                  _buildSummaryCards(),
+                  const SizedBox(height: 32),
+                  _buildSalesTable(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -294,17 +302,17 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
             Text(
               value,
               style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.white.withOpacity(0.9),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               subtitle,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+              style: GoogleFonts.inter(
                 fontSize: 14,
+                color: Colors.white.withOpacity(0.7),
               ),
             ),
           ],
@@ -314,96 +322,54 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
   }
 
   Widget _buildSalesTable() {
-    return Expanded(
-      child: SingleChildScrollView(
-        // Add scroll view here
-        child: Container(
-          height: 800, // Increased height for the sales card
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  'Sales History',
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2D3748),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    headingRowColor: MaterialStateProperty.all(
-                      const Color(0xFFF8FAFC),
-                    ),
-                    columnSpacing: 40,
-                    columns: [
-                      _buildDataColumn('Date'),
-                      _buildDataColumn('Total Sales'),
-                      _buildDataColumn('Orders'),
-                      _buildDataColumn('Avg. Order Value'),
-                      _buildDataColumn('Growth'),
-                      _buildDataColumn('Top Selling Items'),
-                    ],
-                    rows: salesData.map((data) {
-                      return DataRow(
-                        cells: [
-                          _buildDataCell(
-                              DateFormat('MMM dd, yyyy').format(data.date)),
-                          _buildDataCell(
-                              currencyFormatter.format(data.totalSales)),
-                          _buildDataCell(data.numberOfOrders.toString()),
-                          _buildDataCell(
-                              currencyFormatter.format(data.averageOrderValue)),
-                          _buildDataCell('${data.growth}%'),
-                          _buildDataCell(data.topSellingItems.join(', ')),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ],
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Sales Data',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF2D3748),
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  DataColumn _buildDataColumn(String label) {
-    return DataColumn(
-      label: Text(
-        label,
-        style: GoogleFonts.inter(
-          fontWeight: FontWeight.w600,
-          color: const Color(0xFF4A5568),
-        ),
-      ),
-    );
-  }
-
-  DataCell _buildDataCell(String value) {
-    return DataCell(
-      Text(
-        value,
-        style: GoogleFonts.inter(
-          color: const Color(0xFF2D3748),
-        ),
+          const SizedBox(height: 16),
+          DataTable(
+            columns: const [
+              DataColumn(label: Text('Date')),
+              DataColumn(label: Text('Sales')),
+              DataColumn(label: Text('Orders')),
+              DataColumn(label: Text('Avg Order Value')),
+              DataColumn(label: Text('Top Selling Items')),
+              DataColumn(label: Text('Growth')),
+            ],
+            rows: salesData
+                .map((data) => DataRow(cells: [
+                      DataCell(
+                          Text(DateFormat('MMM dd, yyyy').format(data.date))),
+                      DataCell(Text(currencyFormatter.format(data.totalSales))),
+                      DataCell(Text(data.numberOfOrders.toString())),
+                      DataCell(Text(
+                          currencyFormatter.format(data.averageOrderValue))),
+                      DataCell(Text(data.topSellingItems.join(', '))),
+                      DataCell(Text('${data.growth}%')),
+                    ]))
+                .toList(),
+          ),
+        ],
       ),
     );
   }

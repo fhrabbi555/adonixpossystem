@@ -1,264 +1,464 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class WebInventoryOverviewScreen extends StatelessWidget {
+class Product {
+  final String name;
+  final int quantity;
+  final double price;
+  final String category;
+  final String imageUrl;
+  final DateTime lastUpdated;
+  final int alertThreshold;
+
+  Product({
+    required this.name,
+    required this.quantity,
+    required this.price,
+    required this.category,
+    required this.imageUrl,
+    required this.lastUpdated,
+    required this.alertThreshold,
+  });
+}
+
+class WebInventoryOverviewScreen extends StatefulWidget {
+  const WebInventoryOverviewScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WebInventoryOverviewScreen> createState() =>
+      _WebInventoryOverviewScreenState();
+}
+
+class _WebInventoryOverviewScreenState
+    extends State<WebInventoryOverviewScreen> {
+  final List<Product> _products = [
+    Product(
+      name: 'Laptop XPS 15',
+      quantity: 25,
+      price: 1299.99,
+      category: 'Electronics',
+      imageUrl: 'assets/laptop.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 2)),
+      alertThreshold: 20,
+    ),
+    Product(
+      name: 'Wireless Mouse',
+      quantity: 15,
+      price: 29.99,
+      category: 'Accessories',
+      imageUrl: 'assets/mouse.png',
+      lastUpdated: DateTime.now().subtract(const Duration(hours: 12)),
+      alertThreshold: 25,
+    ),
+    // Add more sample products
+  ];
+
+  String _searchQuery = '';
+  String _selectedCategory = 'All';
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Inventory Dashboard",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Add Product Logic
-              },
-              icon: Icon(Icons.add, color: Colors.white),
-              label: Text("Add Product"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.shade600,
-                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      drawer: _buildSideNavigation(),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hero Section with Gradient Background
-              _buildHeroSection(),
-
-              SizedBox(height: 32),
-
-              // Stats Overview Section
-              _buildStatsGrid(),
-
-              SizedBox(height: 32),
-
-              // Inventory Table Section
-              _buildInventoryTable(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Side Navigation for Web
-  Widget _buildSideNavigation() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue.shade600,
-            ),
-            child: Text(
-              'Navigation',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text('Dashboard'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Orders'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Products'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Customers'),
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Hero Section with Gradient Background
-  Widget _buildHeroSection() {
     return Container(
-      height: 220,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blue.shade700, Colors.blue.shade400],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+      color: Colors.grey[100],
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Welcome to Your Inventory",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 16),
-          Text(
-            "Manage and track your products with ease.",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white70,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Stats Grid with Hover Effects
-  Widget _buildStatsGrid() {
-    List<Map<String, String>> stats = [
-      {"title": "Total Products", "value": "150"},
-      {"title": "In Stock", "value": "120"},
-      {"title": "Low Stock", "value": "20"},
-      {"title": "Out of Stock", "value": "10"},
-    ];
-    List<Color> colors = [
-      Colors.blue.shade600,
-      Colors.green.shade500,
-      Colors.orange.shade600,
-      Colors.red.shade600,
-    ];
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-      ),
-      itemCount: stats.length,
-      itemBuilder: (context, index) {
-        return MouseRegion(
-          onHover: (_) {
-            // Add hover effect (optional)
-          },
-          child: Material(
-            elevation: 8,
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  colors: [
-                    colors[index].withOpacity(0.9),
-                    colors[index].withOpacity(0.6),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              padding: EdgeInsets.all(24),
-              child: Column(
+          // Header Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    stats[index]["title"]!,
+                  const Text(
+                    'Inventory Overview',
                     style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    stats[index]["value"]!,
-                    style: TextStyle(
-                      color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Text(
+                    DateFormat('MMMM dd, yyyy').format(DateTime.now()),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
+              ),
+              Row(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.file_download),
+                    label: const Text('Export'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add Product'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Stats Cards
+          Row(
+            children: [
+              _buildStatCard(
+                'Total Products',
+                _products.length.toString(),
+                Icons.inventory,
+                Colors.blue,
+                'Updated just now',
+              ),
+              const SizedBox(width: 16),
+              _buildStatCard(
+                'Low Stock Items',
+                _products
+                    .where((p) => p.quantity < p.alertThreshold)
+                    .length
+                    .toString(),
+                Icons.warning,
+                Colors.orange,
+                'Requires attention',
+              ),
+              const SizedBox(width: 16),
+              _buildStatCard(
+                'Out of Stock',
+                _products.where((p) => p.quantity == 0).length.toString(),
+                Icons.error,
+                Colors.red,
+                'Critical items',
+              ),
+              const SizedBox(width: 16),
+              _buildStatCard(
+                'Total Value',
+                '\$${NumberFormat('#,##0.00').format(_products.fold(0.0, (sum, product) => sum + (product.price * product.quantity)))}',
+                Icons.attach_money,
+                Colors.green,
+                'Inventory worth',
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Search and Filter
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search products...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedCategory,
+                      hint: const Text('Category'),
+                      items: ['All', 'Electronics', 'Accessories']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCategory = newValue!;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Products Table
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SingleChildScrollView(
+                  child: DataTable(
+                    headingRowColor: MaterialStateProperty.all(Colors.grey[50]),
+                    columns: const [
+                      DataColumn(label: Text('Product')),
+                      DataColumn(label: Text('Category')),
+                      DataColumn(label: Text('Stock Status')),
+                      DataColumn(label: Text('Price')),
+                      DataColumn(label: Text('Last Updated')),
+                      DataColumn(label: Text('Actions')),
+                    ],
+                    rows: _products
+                        .where((product) =>
+                            product.name
+                                .toLowerCase()
+                                .contains(_searchQuery.toLowerCase()) &&
+                            (_selectedCategory == 'All' ||
+                                product.category == _selectedCategory))
+                        .map(
+                          (product) => DataRow(
+                            cells: [
+                              DataCell(
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Icon(
+                                          Icons.inventory_2_outlined),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      product.name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue[50],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    product.category,
+                                    style: TextStyle(
+                                      color: Colors.blue[700],
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(_buildStockStatus(product)),
+                              DataCell(
+                                Text(
+                                  '\$${NumberFormat('#,##0.00').format(product.price)}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Text(
+                                  DateFormat('MMM dd, HH:mm')
+                                      .format(product.lastUpdated),
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit_outlined),
+                                      color: Colors.blue,
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete_outline),
+                                      color: Colors.red,
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
               ),
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  // Inventory Table with Hover Effects and Tooltips
-  Widget _buildInventoryTable() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 8,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: DataTable(
-          columnSpacing: 24,
-          headingRowColor:
-              MaterialStateColor.resolveWith((states) => Colors.blue.shade100),
-          columns: [
-            DataColumn(label: Text("Product Name")),
-            DataColumn(label: Text("Category")),
-            DataColumn(label: Text("Stock Quantity")),
-            DataColumn(label: Text("Price")),
-            DataColumn(label: Text("Actions")),
-          ],
-          rows: List.generate(
-            10,
-            (index) => DataRow(cells: [
-              DataCell(Text("Product $index")),
-              DataCell(Text("Category $index")),
-              DataCell(Text("50")),
-              DataCell(Text("\$100")),
-              DataCell(Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.visibility, color: Colors.blue),
-                    onPressed: () {},
-                    tooltip: 'View Product',
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit, color: Colors.green),
-                    onPressed: () {},
-                    tooltip: 'Edit Product',
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {},
-                    tooltip: 'Delete Product',
-                  ),
-                ],
-              )),
-            ]),
+  Widget _buildStockStatus(Product product) {
+    Color backgroundColor;
+    Color textColor;
+    String status;
+    IconData icon;
+
+    if (product.quantity == 0) {
+      backgroundColor = Colors.red[50]!;
+      textColor = Colors.red[700]!;
+      status = 'Out of Stock';
+      icon = Icons.error_outline;
+    } else if (product.quantity < product.alertThreshold) {
+      backgroundColor = Colors.orange[50]!;
+      textColor = Colors.orange[700]!;
+      status = 'Low Stock';
+      icon = Icons.warning_outlined;
+    } else {
+      backgroundColor = Colors.green[50]!;
+      textColor = Colors.green[700]!;
+      status = 'In Stock';
+      icon = Icons.check_circle_outline;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: textColor),
+          const SizedBox(width: 4),
+          Text(
+            status,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color, String subtitle) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 20,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontSize: 12,
+              ),
+            ),
+          ],
         ),
       ),
     );
