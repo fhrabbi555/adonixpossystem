@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utility /app_color.dart';
+
 class WebOrderListScreen extends StatelessWidget {
   final List<Order> orders = [
     Order(
@@ -357,9 +359,4 @@ class Order {
     required this.status,
     required this.date,
   });
-}
-
-// Assuming AppColors class exists in your project
-class AppColors {
-  static const Color primaryGreen = Color(0xFF4CAF50);
 }
