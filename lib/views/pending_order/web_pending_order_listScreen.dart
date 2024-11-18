@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-class WebOrderListScreen extends StatelessWidget {
-  final List<Order> orders = [
+import '../../models/order.dart';
+
+class WebPendingOrderListScreen extends StatelessWidget {
+  final List<Order> pendingOrders = [
     Order(
-      id: "ORD-001",
-      customerName: "John Doe",
-      items: 3,
-      total: 149.99,
-      status: OrderStatus.delivered,
-      date: "2024-11-18",
-    ),
-    Order(
-      id: "ORD-002",
-      customerName: "Jane Smith",
+      id: "ORD-101",
+      customerName: "Alice Johnson",
       items: 2,
-      total: 89.99,
-      status: OrderStatus.processing,
-      date: "2024-11-18",
+      total: 129.99,
+      date: "2024-11-16",
     ),
-    // Add more sample orders as needed
+    Order(
+      id: "ORD-102",
+      customerName: "Bob Smith",
+      items: 5,
+      total: 249.99,
+      date: "2024-11-15",
+    ),
+    // Add more sample pending orders as needed
   ];
 
-  WebOrderListScreen({Key? key}) : super(key: key);
+  WebPendingOrderListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class WebOrderListScreen extends StatelessWidget {
             _buildFilterSection(),
             const SizedBox(height: 24),
             Expanded(
-              child: _buildOrderList(),
+              child: _buildPendingOrderList(),
             ),
           ],
         ),
@@ -53,8 +55,8 @@ class WebOrderListScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Orders',
-              style: TextStyle(
+              'Pending Orders',
+              style: GoogleFonts.poppins(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[800],
@@ -62,8 +64,8 @@ class WebOrderListScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Manage and track your orders',
-              style: TextStyle(
+              'Manage pending customer orders',
+              style: GoogleFonts.poppins(
                 fontSize: 16,
                 color: Colors.grey[600],
               ),
@@ -107,7 +109,7 @@ class WebOrderListScreen extends StatelessWidget {
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search orders...',
+                hintText: 'Search pending orders...',
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -119,8 +121,6 @@ class WebOrderListScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          _buildFilterButton('Status'),
-          const SizedBox(width: 12),
           _buildFilterButton('Date'),
           const SizedBox(width: 12),
           _buildFilterButton('Price'),
@@ -145,7 +145,7 @@ class WebOrderListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderList() {
+  Widget _buildPendingOrderList() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -159,14 +159,72 @@ class WebOrderListScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: orders.length,
-        separatorBuilder: (context, index) => const Divider(),
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return _buildOrderCard(order);
-        },
+      child: Column(
+        children: [
+          // Table Headers
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Order No',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Quantity',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Price',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Date',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.more_vert, color: Colors.transparent),
+                  onPressed: null, // Placeholder for alignment
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+
+          // Pending Orders List
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: pendingOrders.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                final order = pendingOrders[index];
+                return _buildOrderCard(order);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -178,31 +236,18 @@ class WebOrderListScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  order.id,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  order.customerName,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
-              ],
+            child: Text(
+              order.id,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
             ),
           ),
           Expanded(
             child: Text(
-              '${order.items} items',
-              style: TextStyle(
+              '${order.items}',
+              style: GoogleFonts.poppins(
                 color: Colors.grey[600],
               ),
             ),
@@ -210,18 +255,15 @@ class WebOrderListScreen extends StatelessWidget {
           Expanded(
             child: Text(
               '\$${order.total.toStringAsFixed(2)}',
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Expanded(
-            child: _buildStatusChip(order.status),
-          ),
-          Expanded(
             child: Text(
               order.date,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.grey[600],
               ),
             ),
@@ -235,65 +277,9 @@ class WebOrderListScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildStatusChip(OrderStatus status) {
-    Color backgroundColor;
-    Color textColor;
-    String text;
-
-    switch (status) {
-      case OrderStatus.processing:
-        backgroundColor = Colors.blue[50]!;
-        textColor = Colors.blue[700]!;
-        text = 'Processing';
-        break;
-      case OrderStatus.delivered:
-        backgroundColor = Colors.green[50]!;
-        textColor = Colors.green[700]!;
-        text = 'Delivered';
-        break;
-
-      // Add more cases as needed
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
 }
 
-// Model classes
-enum OrderStatus { processing, delivered }
-
-class Order {
-  final String id;
-  final String customerName;
-  final int items;
-  final double total;
-  final OrderStatus status;
-  final String date;
-
-  Order({
-    required this.id,
-    required this.customerName,
-    required this.items,
-    required this.total,
-    required this.status,
-    required this.date,
-  });
-}
+// Model class for Order
 
 // Assuming AppColors class exists in your project
 class AppColors {

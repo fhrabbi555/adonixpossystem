@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../InventoryOverview/web_inventory_overview_screen.dart';
+import '../cancel_order/web_cancel_order_list_screen.dart';
+import '../complete_order/web_complete_order_list_screen.dart';
 import '../layouts/sidebar_menu.dart';
 import '../order_list/web_order_list_screen.dart';
 import '../overview/web_overview_screen.dart';
+import '../pending_order/web_pending_order_listScreen.dart';
 import '../pos_invoice/web_pos_invoice_screen.dart';
 import '../sale_summary/web_sale_summary_screen.dart';
 
@@ -25,6 +28,9 @@ class _WebHomeScreenState extends State<WebHomeScreen> {
     // Order Menu
     WebPOSInvoiceScreen(),
     WebOrderListScreen(),
+    WebPendingOrderListScreen(),
+    WebCompleteOrderListScreen(),
+    WebCancelOrderListScreen(),
   ];
 
   void _onItemTapped(int index) {
