@@ -328,12 +328,14 @@ class WebOrderListScreen extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
