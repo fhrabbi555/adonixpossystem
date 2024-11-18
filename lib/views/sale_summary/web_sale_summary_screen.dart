@@ -7,13 +7,21 @@ class SaleSummaryData {
   final int quantity;
   final double price;
   final DateTime date;
+  final double discount;
+  final double tax;
+  final String status;
 
   SaleSummaryData({
     required this.productName,
     required this.quantity,
     required this.price,
     required this.date,
+    required this.discount,
+    required this.tax,
+    required this.status,
   });
+
+  double get totalPrice => (price * quantity) - discount + tax;
 }
 
 class WebSaleSummaryScreen extends StatefulWidget {
@@ -36,15 +44,84 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
       quantity: 10,
       price: 1299.99,
       date: DateTime.now().subtract(const Duration(days: 5)),
+      discount: 100.0,
+      tax: 50.0,
+      status: 'Completed',
     ),
     SaleSummaryData(
       productName: 'Wireless Mouse',
       quantity: 15,
       price: 29.99,
       date: DateTime.now().subtract(const Duration(days: 3)),
+      discount: 10.0,
+      tax: 5.0,
+      status: 'Pending',
     ),
-    // Add more sample sales data as needed
+    SaleSummaryData(
+      productName: 'Gaming Keyboard',
+      quantity: 5,
+      price: 89.99,
+      date: DateTime.now().subtract(const Duration(days: 7)),
+      discount: 20.0,
+      tax: 10.0,
+      status: 'Shipped',
+    ),
+    SaleSummaryData(
+      productName: 'Smartphone XYZ',
+      quantity: 8,
+      price: 799.99,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      discount: 50.0,
+      tax: 40.0,
+      status: 'Cancelled',
+    ),
+    SaleSummaryData(
+      productName: 'Bluetooth Headphones',
+      quantity: 12,
+      price: 59.99,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+      discount: 30.0,
+      tax: 5.0,
+      status: 'Processing',
+    ),
+    SaleSummaryData(
+      productName: 'External Hard Drive',
+      quantity: 6,
+      price: 99.99,
+      date: DateTime.now().subtract(const Duration(days: 6)),
+      discount: 15.0,
+      tax: 10.0,
+      status: 'Completed',
+    ),
+    SaleSummaryData(
+      productName: 'Smartwatch',
+      quantity: 4,
+      price: 199.99,
+      date: DateTime.now().subtract(const Duration(days: 4)),
+      discount: 25.0,
+      tax: 15.0,
+      status: 'Failed',
+    ),
   ];
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Completed':
+        return Colors.green;
+      case 'Pending':
+        return Colors.orange;
+      case 'Shipped':
+        return Colors.blue;
+      case 'Cancelled':
+        return Colors.red;
+      case 'Processing':
+        return Colors.purple;
+      case 'Failed':
+        return Colors.redAccent;
+      default:
+        return Colors.grey;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,21 +185,6 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
               ),
             ],
           ),
-          Row(
-            children: [
-              _buildActionButton(
-                icon: Icons.file_download_outlined,
-                label: 'Export',
-                onPressed: () {},
-              ),
-              const SizedBox(width: 16),
-              _buildActionButton(
-                icon: Icons.refresh,
-                label: 'Refresh',
-                onPressed: () {},
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -159,26 +221,33 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
                   });
                 }
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Start Date',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF718096),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE6F7FF),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Start Date',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: const Color(0xFF718096),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    DateFormat('MMM dd, yyyy').format(selectedStartDate),
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2D3748),
+                    const SizedBox(height: 4),
+                    Text(
+                      DateFormat('MMM dd, yyyy').format(selectedStartDate),
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF2D3748),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -198,26 +267,33 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
                   });
                 }
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'End Date',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF718096),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE6F7FF),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'End Date',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: const Color(0xFF718096),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    DateFormat('MMM dd, yyyy').format(selectedEndDate),
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2D3748),
+                    const SizedBox(height: 4),
+                    Text(
+                      DateFormat('MMM dd, yyyy').format(selectedEndDate),
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF2D3748),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -232,7 +308,7 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
       (sum, sale) => sum + (sale.quantity * sale.price),
     );
     final totalOrders = salesData.length;
-    final averageOrderValue = totalSales / totalOrders;
+    final averageOrderValue = totalSales / (totalOrders == 0 ? 1 : totalOrders);
 
     return Row(
       children: [
@@ -334,86 +410,56 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1200),
-            child: DataTable(
-              headingRowColor: MaterialStateProperty.all(Colors.grey[50]),
-              columns: const [
-                DataColumn(label: Text('Product')),
-                DataColumn(label: Text('Quantity')),
-                DataColumn(label: Text('Price')),
-                DataColumn(label: Text('Date')),
-              ],
-              rows: salesData
-                  .where((sale) =>
-                      sale.date.isAfter(selectedStartDate) &&
-                      sale.date.isBefore(selectedEndDate.add(const Duration(
-                          days: 1)))) // Include sales on the end date
-                  .map(
-                    (sale) => DataRow(
-                      cells: [
-                        DataCell(
-                          Text(
-                            sale.productName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
+          child: DataTable(
+            headingRowColor: MaterialStateProperty.all(Colors.grey[50]),
+            columns: const [
+              DataColumn(label: Text('Product')),
+              DataColumn(label: Text('Quantity')),
+              DataColumn(label: Text('Price')),
+              DataColumn(label: Text('Discount')),
+              DataColumn(label: Text('Tax')),
+              DataColumn(label: Text('Total Price')),
+              DataColumn(label: Text('Date')),
+              DataColumn(label: Text('Status')),
+            ],
+            rows: salesData
+                .where((sale) =>
+                    sale.date.isAfter(selectedStartDate) &&
+                    sale.date
+                        .isBefore(selectedEndDate.add(const Duration(days: 1))))
+                .map(
+                  (sale) => DataRow(
+                    cells: [
+                      DataCell(Text(sale.productName)),
+                      DataCell(Text(sale.quantity.toString())),
+                      DataCell(Text(currencyFormatter.format(sale.price))),
+                      DataCell(Text(currencyFormatter.format(sale.discount))),
+                      DataCell(Text(currencyFormatter.format(sale.tax))),
+                      DataCell(Text(currencyFormatter.format(sale.totalPrice))),
+                      DataCell(
+                          Text(DateFormat('MMM dd, yyyy').format(sale.date))),
+                      DataCell(
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
+                          decoration: BoxDecoration(
+                            color:
+                                _getStatusColor(sale.status).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                        DataCell(
-                          Text(
-                            sale.quantity.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Text(
-                            currencyFormatter.format(sale.price),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Text(
-                            DateFormat('MMM dd, yyyy').format(sale.date),
+                          child: Text(
+                            sale.status,
                             style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 13,
+                              color: _getStatusColor(sale.status),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Theme.of(context).primaryColor,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
         ),
       ),
     );
