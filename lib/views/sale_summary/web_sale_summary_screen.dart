@@ -469,7 +469,7 @@ class _WebSaleSummaryScreenState extends State<WebSaleSummaryScreen> {
                       DataCell(
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
+                              vertical: 4, horizontal: 12),
                           decoration: BoxDecoration(
                             color:
                                 _getStatusColor(sale.status).withOpacity(0.2),
