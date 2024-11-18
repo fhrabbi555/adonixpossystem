@@ -15,6 +15,7 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
   int purchaseQuantity = 0;
   DateTime purchaseDate = DateTime.now();
   String aiRecommendation = 'Start typing to see AI suggestions';
+  String barcode = '';
 
   final List<String> products = [
     'Wireless Earbuds',
@@ -63,6 +64,8 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
             ),
             const SizedBox(height: 16),
             _buildPurchaseDetails(),
+            const SizedBox(height: 16),
+            _buildBarcodeInput(),
             const SizedBox(height: 24),
             _buildAIRecommendations(),
             const SizedBox(height: 32),
@@ -127,6 +130,56 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
     );
   }
 
+  Widget _buildBarcodeInput() {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: _buildCard(
+          icon: Icons.qr_code,
+          title: 'Barcode',
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter barcode or scan',
+                    labelStyle: TextStyle(color: AppColors.black),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryGreen),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryGreen),
+                    ),
+                    prefixIcon: const Icon(Icons.qr_code, color: Colors.grey),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      barcode = value;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    barcode = 'SCANNED-12345';
+                  });
+                },
+                icon: const Icon(Icons.qr_code_scanner, color: Colors.white),
+                label:
+                    const Text('Scan', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSuggestionField({
     required String hintText,
     required List<String> suggestions,
@@ -147,8 +200,14 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
           focusNode: focusNode,
           decoration: InputDecoration(
             hintText: hintText,
-            border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.search),
+            labelStyle: TextStyle(color: AppColors.primaryGreen),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.primaryGreen),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.primaryGreen),
+            ),
+            prefixIcon: const Icon(Icons.edit, color: Colors.grey),
           ),
           onChanged: onChanged,
         );
@@ -167,9 +226,15 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
           TextField(
             decoration: InputDecoration(
               labelText: 'Quantity',
+              labelStyle: TextStyle(color: AppColors.black),
               hintText: 'Enter purchase quantity',
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.numbers),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryGreen),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryGreen),
+              ),
+              prefixIcon: const Icon(Icons.numbers, color: Colors.grey),
             ),
             keyboardType: TextInputType.number,
             onChanged: (value) {
@@ -185,8 +250,15 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
                 text: '${purchaseDate.toLocal()}'.split(' ')[0]),
             decoration: InputDecoration(
               labelText: 'Purchase Date',
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.calendar_today_outlined),
+              labelStyle: TextStyle(color: AppColors.primaryGreen),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryGreen),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryGreen),
+              ),
+              prefixIcon:
+                  const Icon(Icons.calendar_today_outlined, color: Colors.grey),
             ),
             onTap: () => _selectDate(context),
           ),
@@ -286,7 +358,7 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
         return AlertDialog(
           title: const Text('Help'),
           content: const Text(
-              'Use this screen to add new purchases. Start typing to see product and supplier suggestions. AI recommendations will help guide your decisions.'),
+              'Use this screen to add new purchases. Start typing to see product and supplier suggestions. AI recommendations will help guide your decisions. Use the barcode field for scanning or manual input.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -320,6 +392,7 @@ class _WebAddPurchaseScreenState extends State<WebAddPurchaseScreen> {
       selectedSupplier = '';
       purchaseQuantity = 0;
       purchaseDate = DateTime.now();
+      barcode = '';
       aiRecommendation = 'Start typing to see AI suggestions';
     });
   }
