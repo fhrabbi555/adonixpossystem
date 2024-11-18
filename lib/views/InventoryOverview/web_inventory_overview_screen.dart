@@ -50,7 +50,97 @@ class _WebInventoryOverviewScreenState
       lastUpdated: DateTime.now().subtract(const Duration(hours: 12)),
       alertThreshold: 25,
     ),
-    // Add more sample products
+    Product(
+      name: 'Smartphone Galaxy S23',
+      quantity: 10,
+      price: 999.99,
+      category: 'Electronics',
+      imageUrl: 'assets/smartphone.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 1)),
+      alertThreshold: 5,
+    ),
+    Product(
+      name: 'Bluetooth Speaker',
+      quantity: 50,
+      price: 49.99,
+      category: 'Accessories',
+      imageUrl: 'assets/speaker.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 3)),
+      alertThreshold: 10,
+    ),
+    Product(
+      name: 'Gaming Keyboard',
+      quantity: 30,
+      price: 79.99,
+      category: 'Accessories',
+      imageUrl: 'assets/keyboard.png',
+      lastUpdated: DateTime.now().subtract(const Duration(hours: 6)),
+      alertThreshold: 15,
+    ),
+    Product(
+      name: 'Monitor 4K UHD',
+      quantity: 20,
+      price: 399.99,
+      category: 'Electronics',
+      imageUrl: 'assets/monitor.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 4)),
+      alertThreshold: 5,
+    ),
+    Product(
+      name: 'External SSD 1TB',
+      quantity: 40,
+      price: 129.99,
+      category: 'Storage',
+      imageUrl: 'assets/ssd.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 5)),
+      alertThreshold: 10,
+    ),
+    Product(
+      name: 'USB-C Docking Station',
+      quantity: 15,
+      price: 59.99,
+      category: 'Accessories',
+      imageUrl: 'assets/docking_station.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 2)),
+      alertThreshold: 5,
+    ),
+    Product(
+      name: 'Noise Cancelling Headphones',
+      quantity: 25,
+      price: 199.99,
+      category: 'Accessories',
+      imageUrl: 'assets/headphones.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 3)),
+      alertThreshold: 10,
+    ),
+    Product(
+      name: 'Smartwatch Series 8',
+      quantity: 20,
+      price: 349.99,
+      category: 'Wearables',
+      imageUrl: 'assets/smartwatch.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 1)),
+      alertThreshold: 5,
+    ),
+    Product(
+      name: 'Portable Charger 20,000mAh',
+      quantity: 0,
+      price: 39.99,
+      category: 'Accessories',
+      imageUrl: 'assets/charger.png',
+      lastUpdated: DateTime.now().subtract(const Duration(days: 7)),
+      alertThreshold: 15,
+    ),
+    Product(
+      name: 'Wireless Earbuds',
+      quantity: 35,
+      price: 89.99,
+      category: 'Accessories',
+      imageUrl: 'assets/earbuds.png',
+      lastUpdated: DateTime.now().subtract(const Duration(hours: 10)),
+      alertThreshold: 10,
+    ),
+    // Add more sample products as needed
   ];
 
   String _searchQuery = '';
@@ -160,7 +250,7 @@ class _WebInventoryOverviewScreenState
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12), // Decreased top margin
 
           // Search and Filter
           Container(
@@ -230,122 +320,132 @@ class _WebInventoryOverviewScreenState
 
           // Products Table
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SingleChildScrollView(
-                  child: DataTable(
-                    headingRowColor: MaterialStateProperty.all(Colors.grey[50]),
-                    columns: const [
-                      DataColumn(label: Text('Product')),
-                      DataColumn(label: Text('Category')),
-                      DataColumn(label: Text('Stock Status')),
-                      DataColumn(label: Text('Price')),
-                      DataColumn(label: Text('Last Updated')),
-                      DataColumn(label: Text('Actions')),
-                    ],
-                    rows: _products
-                        .where((product) =>
-                            product.name
-                                .toLowerCase()
-                                .contains(_searchQuery.toLowerCase()) &&
-                            (_selectedCategory == 'All' ||
-                                product.category == _selectedCategory))
-                        .map(
-                          (product) => DataRow(
-                            cells: [
-                              DataCell(
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Icon(
-                                          Icons.inventory_2_outlined),
+            child: Center(
+              // Center the DataTable
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 1200), // Set max width
+                      child: DataTable(
+                        headingRowColor:
+                            MaterialStateProperty.all(Colors.grey[50]),
+                        columns: const [
+                          DataColumn(label: Text('Product')),
+                          DataColumn(label: Text('Category')),
+                          DataColumn(label: Text('Stock Status')),
+                          DataColumn(label: Text('Price')),
+                          DataColumn(label: Text('Last Updated')),
+                          DataColumn(label: Text('Actions')),
+                        ],
+                        rows: _products
+                            .where((product) =>
+                                product.name
+                                    .toLowerCase()
+                                    .contains(_searchQuery.toLowerCase()) &&
+                                (_selectedCategory == 'All' ||
+                                    product.category == _selectedCategory))
+                            .map(
+                              (product) => DataRow(
+                                cells: [
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[100],
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Icon(
+                                              Icons.inventory_2_outlined),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Text(
+                                          product.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 12),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[50],
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        product.category,
+                                        style: TextStyle(
+                                          color: Colors.blue[700],
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(_buildStockStatus(product)),
+                                  DataCell(
                                     Text(
-                                      product.name,
+                                      '\$${NumberFormat('#,##0.00').format(product.price)}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              DataCell(
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue[50],
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Text(
-                                    product.category,
-                                    style: TextStyle(
-                                      color: Colors.blue[700],
-                                      fontSize: 12,
+                                  DataCell(
+                                    Text(
+                                      DateFormat('MMM dd, HH:mm')
+                                          .format(product.lastUpdated),
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 13,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              DataCell(_buildStockStatus(product)),
-                              DataCell(
-                                Text(
-                                  '\$${NumberFormat('#,##0.00').format(product.price)}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  DateFormat('MMM dd, HH:mm')
-                                      .format(product.lastUpdated),
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
-                                      color: Colors.blue,
-                                      onPressed: () {},
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit_outlined),
+                                          color: Colors.blue,
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon:
+                                              const Icon(Icons.delete_outline),
+                                          color: Colors.red,
+                                          onPressed: () {},
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete_outline),
-                                      color: Colors.red,
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )
-                        .toList(),
+                            )
+                            .toList(),
+                      ),
+                    ),
                   ),
                 ),
               ),
